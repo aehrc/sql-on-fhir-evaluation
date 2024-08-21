@@ -1,0 +1,21 @@
+/.idea/
+/target/
+
+# python
+*.egg-info/
+__pycache__
+*.pyc
+
+
+
+#MacOS
+.DS_Store
+
+#project specific
+_work/
+_temp/
+_remote/
+
+
+#HPC
+slurm-*.out
