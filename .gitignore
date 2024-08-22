@@ -20,3 +20,4 @@ _remote/
 #HPC
 slurm-*.out
 /.Rhistory
+/.RData

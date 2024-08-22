@@ -6,8 +6,11 @@ library(ggplot2)
 
 # SPO2
 
-spo2_raw_df <- read.csv('data/patients_with_spo2.csv', stringsAsFactors = TRUE)
-spo2_df<- data.frame(spo2_raw_df, read_timestamp = ymd_hms(spo2_raw_df$read_time))
+spo2_raw_df <- read.csv('data/patients_with_spo2.csv', stringsAsFactors = FALSE)
+spo2_df<- spo2_raw_df %>% mutate( 
+                     race_category = factor(race_category, 
+                                levels=c('WHITE', 'ASIAN','BLACK', 'HISPANIC' )),
+                     read_timestamp = ymd_hms(read_time))
 
 
 avg_flow <-function(times, data) {
@@ -54,7 +57,10 @@ print(iqr_df)
 # SO2
 
 so2_raw_df <- read.csv('data/patients_with_so2.csv', stringsAsFactors = TRUE)
-so2_df<- data.frame(so2_raw_df, read_timestamp = ymd_hms(so2_raw_df$read_time))
+so2_df<- so2_raw_df %>% mutate( 
+  race_category = factor(race_category, 
+                         levels=c('WHITE', 'ASIAN','BLACK', 'HISPANIC' )),
+  read_timestamp = ymd_hms(read_time))
 
 
 so2_avg_df <- so2_df %>%  
@@ -92,7 +98,7 @@ joined_df <- inner_join(so2_avg_df, spo2_avg_df, by = c("subject_id", "race_cate
 
 # Print the joined data frame to verify
 print(joined_df)
-
+print(summary(joined_df))
 
 print(
   ggplot(joined_df, aes(x=so2, y=spo2)) 
@@ -101,3 +107,7 @@ print(
 )
 
 
+spo2_lm <-lm(spo2 ~  so2 + race_category, data = joined_df)
+print(summary(spo2_lm))
+
+print(anova(spo2_lm))
