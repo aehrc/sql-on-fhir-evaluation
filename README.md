@@ -84,14 +84,29 @@ create table sofa
 );
 ```
 
-TBD:
-- vasopresin  and inotrope
-- Elixhauser comorbidity scores 
 
+### Linear models
 
+#### Model 1
 
+```
+SpO2 
+~ SO2 + race_ethnicity + Avg Resp Rate + Initial pCO2 + No. of blood gas tests day 1 + Hgb + Required pressoers/intropes + Gender(Male Sex) + Index Period Duration + Elixhauser Score
+```
 
+- SpO2 [%]: `avg(vitalsign.spo2)`
+- SO2 [%]: `avg(bg.so2)`
+- race_ethnicity: `to_race_code(icustay_detail.race)`
+- Avg Resp Rate [breaths/min]: `avg(vitalsign.resp_rate)`
+- Initial pCO2 [mmHg]: `first(bg.pco2)`
+- No. of blood gas tests day 1 [count]: `{count of bg tests on day 1 where so2 is not null}`
+- Hgb(Hemoglobin) [g/dL]: `avg(bg.hemoglobin)`
+- Gender(Male Sex): `icustay_detail.gender`
+- Index Period Duration [days]: `{computed duration of index period}`
+- Elixhauser Score: `{based on the ICD codes from mimiciv_hosp.diagnoses_icd}` (??? not clear if codes are per subject or per stay/admission. Feed the codes to the comorbidity R package. ??? Also not clear what weights were used for the calculation of the score)
+- Required pressors/intropess: `{exits(not null COALESCE(domapmine, ...) vasoactive_agent) in index period}` (not need to refer to the per agent tables)
 
 ## Resources
-- http://www.sthda.com/english/wiki/unpaired-two-samples-wilcoxon-test-in-r#:~:text=The%20unpaired%20two%2Dsamples%20Wilcoxon,two%20independent%20groups%20of%20samples.
-- 
+- [Assessment of Racial and Ethnic Differences in Oxygen Supplementation Among Patients in the Intensive Care Unit](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2794196)
+- [R-Unpaired Two Samples Wilson-Cox Test](http://www.sthda.com/english/wiki/unpaired-two-samples-wilcoxon-test-in-r#:~:text=The%20unpaired%20two%2Dsamples%20Wilcoxon,two%20independent%20groups%20of%20samples)
+- [R - comorbidity package](https://www.theoj.org/joss-papers/joss.00648/10.21105.joss.00648.pdf)
