@@ -1,0 +1,6 @@
+duckdb==1.0.0
+pyspark==3.5.2
+click==8.1.7
+pandas==2.2.2
+jupyter==1.0.0
+#pathling-7.1.0.dev0.tar.gz
