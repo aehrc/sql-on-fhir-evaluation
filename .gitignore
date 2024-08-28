@@ -1,5 +1,6 @@
 /.idea/
 /target/
+/_data/
 
 # python
 *.egg-info/
@@ -21,3 +22,5 @@ _remote/
 slurm-*.out
 /.Rhistory
 /.RData
+
+

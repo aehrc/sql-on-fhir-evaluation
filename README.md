@@ -94,10 +94,10 @@ SpO2
 ~ SO2 + race_ethnicity + Avg Resp Rate + Initial pCO2 + No. of blood gas tests day 1 + Hgb + Required pressoers/intropes + Gender(Male Sex) + Index Period Duration + Elixhauser Score
 ```
 
-- SpO2 [%]: `avg(vitalsign.spo2)`
+- SpO2 [%]: `avg(vitalsign.spo2)` (`mimic-chartevents-d-items|20277|O2 saturation pulseoxymetry`)
 - SO2 [%]: `avg(bg.so2)`
 - race_ethnicity: `to_race_code(icustay_detail.race)`
-- Avg Resp Rate [breaths/min]: `avg(vitalsign.resp_rate)`
+- Avg Resp Rate [breaths/min]: `avg(vitalsign.resp_rate)` (`mimic-chartevents-d-items|224690|Respiratory Rate (Total)`) (also d-item: 220210)
 - Initial pCO2 [mmHg]: `first(bg.pco2)`
 - No. of blood gas tests day 1 [count]: `{count of bg tests on day 1 where so2 is not null}`
 - Hgb(Hemoglobin) [g/dL]: `avg(bg.hemoglobin)`
@@ -110,3 +110,12 @@ SpO2
 - [Assessment of Racial and Ethnic Differences in Oxygen Supplementation Among Patients in the Intensive Care Unit](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2794196)
 - [R-Unpaired Two Samples Wilson-Cox Test](http://www.sthda.com/english/wiki/unpaired-two-samples-wilcoxon-test-in-r#:~:text=The%20unpaired%20two%2Dsamples%20Wilcoxon,two%20independent%20groups%20of%20samples)
 - [R - comorbidity package](https://www.theoj.org/joss-papers/joss.00648/10.21105.joss.00648.pdf)
+
+
+## TODO
+
+- [ ] Write script for pathling encoding from JSON (the parquet version does not seem to work)
+- [ ] Connect export notebook the demo datasource
+- [ ] Discuss with John the correct approach for dealing with codes (race + ethnicity)
+- 
+
