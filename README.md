@@ -119,3 +119,6 @@ SpO2
 - [ ] Discuss with John the correct approach for dealing with codes (race + ethnicity)
 - 
 
+
+## Notes
+- setting  `spark.sql.ansi.enabled` to true result in exception in Pathling.
