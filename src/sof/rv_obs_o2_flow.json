@@ -1,0 +1,64 @@
+{
+  "name": "rv_obs_o2_flow",
+  "resource": "Observation",
+  "select": [
+    {
+      "column": [
+        {
+          "name": "id",
+          "path": "id",
+          "type": "id",
+          "collection": false
+        },
+        {
+          "name": "patient_id",
+          "path": "subject.getReferenceKey()",
+          "type": "string",
+          "collection": false
+        },
+        {
+          "name": "encounter_id",
+          "path": "encounter.getReferenceKey()",
+          "type": "string",
+          "collection": false
+        },
+        {
+          "name": "charttime",
+          "path": "effectiveDateTime",
+          "type": "dateTime",
+          "collection": false
+        },
+        {
+          "name": "storetime",
+          "path": "issued",
+          "type": "instant",
+          "collection": false
+        },
+        {
+          "name": "value",
+          "path": "valueQuantity.value",
+          "type": "decimal",
+          "collection": false
+        },
+        {
+          "name": "unit",
+          "path": "valueQuantity.unit",
+          "collection": false
+        },
+        {
+          "name": "code",
+          "path": "code.coding.code",
+          "collection": false
+        }
+      ]
+    }
+  ],
+  "where": [
+    {
+      "path": "code.coding.system = 'http://mimic.mit.edu/fhir/mimic/CodeSystem/mimic-chartevents-d-items'"
+    },
+    {
+      "path": "code.coding.code = '223834' or code.coding.code = '227582' or code.coding.code = '227287'"
+    }
+  ]
+}

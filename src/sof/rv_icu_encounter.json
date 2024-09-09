@@ -1,0 +1,42 @@
+{
+  "name": "rv_icu_encounter",
+  "resource": "Encounter",
+  "select": [
+    {
+      "column": [
+        {
+          "name": "encounter_id",
+          "path": "getResourceKey()",
+          "type": "string",
+          "collection": false
+        },
+        {
+          "name": "patient_id",
+          "path": "subject.getReferenceKey()",
+          "type": "string",
+          "collection": false
+        },
+        {
+          "name": "admit_date",
+          "path": "period.start",
+          "type": "dateTime",
+          "collection": false
+        },
+        {
+          "name": "disch_date",
+          "path": "period.end",
+          "type": "dateTime",
+          "collection": false
+        }
+      ]
+    }
+  ],
+  "where": [
+    {
+      "path": "class.system = 'http://terminology.hl7.org/CodeSystem/v3-ActCode'"
+    },
+    {
+      "path": "class.code = 'ACUTE'"
+    }
+  ]
+}

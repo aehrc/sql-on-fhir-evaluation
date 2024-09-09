@@ -33,8 +33,8 @@ source('R/functions.R')
 Load subject and o2 flow data:
 
 ```{r load_data}
-subject_df <- load_subject('data/psql/subject.csv')
-reading_o2_flow_df <- load_reading('data/psql/reading_o2_flow.csv')
+subject_df <- load_subject('data/fhir_mimic-2.2/subject.csv')
+reading_o2_flow_df <- load_reading('data/fhir_mimic-2.2/reading_o2_flow.csv')
 ```
 
 Compute the average o2 flow for each subject and join with the subject data:
@@ -97,7 +97,7 @@ wc_white_asian <- wilcox.test(o2_flow ~ race_category, alternative = 'greater',
 wc_white_asian
 ```
 
-#### Asian vs Hispanic
+#### Hispanic vs White
 
 ```{r test_white_hispanic}
 wc_white_hispanic <- wilcox.test(o2_flow ~ race_category, alternative = 'greater',

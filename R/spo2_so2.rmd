@@ -32,9 +32,9 @@ source('R/functions.R')
 Load subject and o2 flow data:
 
 ```{r load_data}
-subject_df <- load_subject('data/psql/subject.csv')
-reading_so2_df <- load_reading('data/psql/reading_so2.csv')
-reading_spo2_df <- load_reading('data/psql/reading_spo2.csv')
+subject_df <- load_subject('data/psql_mimic-2.2/subject.csv')
+reading_so2_df <- load_reading('data/psql_mimic-2.2/reading_so2.csv')
+reading_spo2_df <- load_reading('data/psql_mimic-2.2/reading_spo2.csv')
 ```
 
 Compute the average spo2 and so2 for each subject and join with the subject data:

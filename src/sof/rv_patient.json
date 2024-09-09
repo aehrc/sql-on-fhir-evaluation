@@ -1,0 +1,40 @@
+{
+  "name": "rv_patient",
+  "resource": "Patient",
+  "select": [
+    {
+      "column": [
+        {
+          "name": "patient_id",
+          "path": "getResourceKey()",
+          "collection": false
+        },
+        {
+          "name": "gender",
+          "path": "gender",
+          "collection": false
+        },
+        {
+          "name": "race_system",
+          "path": "extension('http://hl7.org/fhir/us/core/StructureDefinition/us-core-race').extension('ombCategory').value.ofType(Coding).system",
+          "collection": false
+        },
+        {
+          "name": "race_code",
+          "path": "extension('http://hl7.org/fhir/us/core/StructureDefinition/us-core-race').extension('ombCategory').value.ofType(Coding).code",
+          "collection": false
+        },
+        {
+          "name": "ethnicity_system",
+          "path": "extension('http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity').extension('ombCategory').value.ofType(Coding).system",
+          "collection": false
+        },
+        {
+          "name": "ethnicity_code",
+          "path": "extension('http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity').extension('ombCategory').value.ofType(Coding).code",
+          "collection": false
+        }
+      ]
+    }
+  ]
+}
