@@ -1,4 +1,4 @@
--- DEPENDS ON: md_icustay_detail, md_oxygen_delivery
+-- DEPENDS-ON: md_icustay_detail, md_oxygen_delivery
 CREATE OR REPLACE TEMP VIEW st_subject AS
 WITH odd AS (SELECT subject_id, stay_id, charttime, o2_delivery_device_1 AS o2_delivery_device
              FROM md_oxygen_delivery

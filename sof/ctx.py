@@ -1,6 +1,7 @@
 from typing import NamedTuple
 
-class ViewCtx(NamedTuple):
+
+class SqlCtx(NamedTuple):
     spark: 'SparkSession'
     ds: 'DataSource'
 
@@ -8,3 +9,5 @@ class ViewCtx(NamedTuple):
         for line in sql.split(';'):
             if line.strip():
                 self.spark.sql(line.strip())
+
+

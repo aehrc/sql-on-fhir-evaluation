@@ -1,5 +1,5 @@
 -- based on: mimic-code/mimic-iv/concepts_postgres/measurement/vitalsign.sql
--- DEPENDS ON: dv_obs_vitalsigns.sql
+-- DEPENDS-ON: dv_obs_vitalsigns
 DROP TABLE IF EXISTS md_vitalsigns;
 CREATE TABLE md_vitalsigns AS
 SELECT
