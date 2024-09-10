@@ -1,5 +1,6 @@
 -- DEPENDS-ON: dv_obs_o2_flow, dv_o2_delivery_device
-CREATE OR REPLACE TEMP VIEW md_oxygen_delivery AS
+DROP TABLE IF EXISTS md_oxygen_delivery;
+CREATE TABLE md_oxygen_delivery AS
 WITH ce_stg1 AS (
     SELECT
         ce.subject_id

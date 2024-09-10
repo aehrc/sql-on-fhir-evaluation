@@ -14,7 +14,7 @@
         </Root>
         
         <!-- Logger for package au.csiro -->
-        <Logger name="au.csiro" level="DEBUG" additivity="false">
+        <Logger name="au.csiro" level="WARN" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
     </Loggers>
