@@ -1,11 +1,11 @@
 
 from .ctx import SqlCtx
-from .view import SOFView, SQLView
+from .view import SOFViewDef, SQLViewDef
 from .app import ViewCtx
 
 __all__ = [
     'SqlCtx',
-    'SOFView',
-    'SQLView',
+    'SOFViewDef',
+    'SQLViewDef',
     'ViewCtx',
 ]

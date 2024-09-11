@@ -1,28 +1,5 @@
 import glob
-from sof import SOFView, SQLView
-
-
-class ResultView:
-    def __init__(self, view_def, sql_ctx):
-        self._view_def = view_def
-        self._name = view_def.name
-        self._sql_ctx = sql_ctx
-
-    @property
-    def name(self):
-        return self._name
-
-    def show(self):
-        self.select().show()
-
-    def to_pandas(self):
-        return self.select().toPandas()
-
-    def to_csv(self, path):
-        self.to_pandas().to_csv(path)
-
-    def select(self):
-        return self._sql_ctx.spark.sql(f"SELECT * FROM {self._name}")
+from sof import SOFViewDef, SQLViewDef
 
 class ViewCtx:
 
@@ -40,11 +17,11 @@ class ViewCtx:
             return self
 
         def load_sof(self, view_glob):
-            return self.with_views([SOFView.from_file(view_file)
+            return self.with_views([SOFViewDef.from_file(view_file)
                                     for view_file in glob.glob(view_glob)])
 
         def load_sql(self, view_glob):
-            return self.with_views([SQLView.from_file(view_file)
+            return self.with_views([SQLViewDef.from_file(view_file)
                                     for view_file in glob.glob(view_glob)])
 
         def build(self):
@@ -67,7 +44,7 @@ class ViewCtx:
             for dep in view_def.depends_on or []:
                 self._instantiate_view(dep)
             view_def.run(self._sql_ctx)
-            self._views[view_name] = ResultView(view_def, self._sql_ctx)
+            self._views[view_name] = self._sql_ctx.query(view_def)
 
     def get_view(self, view_name):
         self._instantiate_view(view_name)

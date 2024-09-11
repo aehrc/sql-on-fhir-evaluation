@@ -3,7 +3,7 @@ import glob
 
 from pathling import PathlingContext
 
-from sof import SqlCtx, ViewCtx, SOFView, SQLView
+from sof import SqlCtx, ViewCtx, SOFViewDef, SQLViewDef
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 

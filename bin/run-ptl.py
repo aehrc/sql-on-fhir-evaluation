@@ -1,9 +1,11 @@
 import os
-import glob
 
 from pathling import PathlingContext
 
-from sof import SqlCtx, SOFView, SQLView, ViewCtx
+from sof import ViewCtx
+from sof.ptl import PtlSqlCtx
+
+from study.export import DataExporter
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -18,30 +20,21 @@ def create_sql_ctx():
     os.environ['SPARK_CONF_DIR'] = SPARK_CONF_DIR
     pc = PathlingContext.create()
     spark = pc.spark
-    return SqlCtx(spark=spark, ds=pc.read.parquet(MIMIC_FHIR_PATH))
+    return PtlSqlCtx(spark=spark, ds=pc.read.parquet(MIMIC_FHIR_PATH))
 
 
 def main():
     print(f"Base dir: {BASE_DIR}")
     print(f"Spark conf dir: {SPARK_CONF_DIR}")
 
-
     view_ctx = (ViewCtx.Builder(sql_ctx=create_sql_ctx())
                 .load_sof(os.path.join(VIEW_SRC_DIR, 'sof/*.json'))
-                .load_sql(os.path.join(VIEW_SRC_DIR, 'sql/*.sql'))
+                .load_sql(os.path.join(VIEW_SRC_DIR, 'mimic-fhir/*.sql'))
+                .load_sql(os.path.join(VIEW_SRC_DIR, 'study/*.sql'))
                 .build())
 
     print(view_ctx._view_defs)
-
-    export_views = [
-        'subject',
-        'reading_o2_flow',
-        'reading_spo2',
-        'reading_so2'
-    ]
-    for view_tag in export_views:
-        print(f"Exporting view: {view_tag}")
-        view_ctx.get_view(f'coh_{view_tag}').to_csv(os.path.join(OUTPUT_DIR, f"{view_tag}.csv"))
+    DataExporter(view_ctx).export(OUTPUT_DIR)
 
 
 if __name__ == '__main__':
