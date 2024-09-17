@@ -1,6 +1,70 @@
 
 
 
+## Aidbox
+
+### Notes:
+
+Setting up basic auth: http://localhost:8080/ui/console?#/sandbox/basic
+
+
+Curl to create a view:
+
+
+file: `tmp/view_request.yaml`
+
+```yaml
+name: patient_view
+resource: Patient
+description: Patient flat view
+status: draft
+select:
+- column:
+  - name: id
+    path: id
+  - name: bod
+    path: birthDate
+  - name: gender
+    path: gender
+```
+
+```bash
+curl -X POST -H "Content-Type: application/yaml" -u basic:secret --data-binary @tmp/view_request.yaml http://localhost:8080/ViewDefinition/
+```
+
+To start local HTTP server in a dir:
+
+```bash
+python3 -m http.server 8000
+```
+
+
+Python script to create a view
+```python
+import requests
+
+# URL and authentication details
+url = 'http://localhost:8080/ViewDefinition/'
+auth = ('basic', 'secret')
+
+# Read the YAML file
+with open('tmp/view_request.yaml', 'r') as file:
+    data = file.read()
+
+# Set the headers
+headers = {
+    'Content-Type': 'application/yaml'
+}
+
+# Make the POST request
+response = requests.post(url, headers=headers, data=data, auth=auth)
+
+# Print the response
+print(response.status_code)
+print(response.text)
+```
+
+
 
 ### Pulse Oximetry and Vital Signs
 
