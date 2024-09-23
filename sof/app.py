@@ -50,3 +50,7 @@ class ViewCtx:
         self._instantiate_view(view_name)
         return self._views[view_name]
 
+
+    def create_all(self):
+        for view_name in self._view_defs:
+            self._instantiate_view(view_name)

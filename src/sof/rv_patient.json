@@ -1,6 +1,7 @@
 {
   "name": "rv_patient",
   "resource": "Patient",
+  "status": "draft",
   "select": [
     {
       "column": [

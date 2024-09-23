@@ -1,0 +1,12 @@
+name: patient_view
+resource: Patient
+description: Patient flat view
+status: draft
+select:
+- column:
+  - name: id
+    path: id
+  - name: bod
+    path: birthDate
+  - name: gender
+    path: gender

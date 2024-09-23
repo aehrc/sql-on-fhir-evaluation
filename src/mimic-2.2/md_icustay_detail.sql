@@ -8,8 +8,8 @@ SELECT subject_id,
            WHEN race LIKE 'WHITE%' THEN 'WHITE'
            WHEN race LIKE 'HISPANIC%' THEN 'HISPANIC'
            END AS race,
-       admittime,
-       dischtime,
+       icu_intime AS admittime,
+       icu_outtime AS dischtime,
        first_icu_stay,
        first_hosp_stay
 FROM mimiciv_derived.icustay_detail;

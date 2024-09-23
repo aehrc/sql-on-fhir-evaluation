@@ -6,6 +6,6 @@ SELECT patient_id AS subject_id,
        storetime,
        valuestr as value,
        value AS valuenum,
-       code as itemid,
+       CAST(code AS INTEGER) as itemid,
        specimen_id
 FROM rv_obs_bg;

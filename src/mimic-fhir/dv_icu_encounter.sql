@@ -8,5 +8,5 @@ WITH tv AS (
         CAST(disch_date  AS TIMESTAMP) icu_outtime
     FROM rv_icu_encounter)
 SELECT *,
-       row_number() over (PARTITION BY subject_id, stay_id ORDER BY icu_intime ASC) AS icustay_seq
+       row_number() over (PARTITION BY subject_id ORDER BY icu_intime ASC) AS icustay_seq
 FROM tv;

@@ -1,6 +1,7 @@
 {
   "name": "rv_obs_bg",
   "resource": "Observation",
+  "status": "draft",
   "select": [
     {
       "column": [
@@ -24,7 +25,7 @@
         },
         {
           "name": "charttime",
-          "path": "effectiveDateTime",
+          "path": "effective.ofType(dateTime)",
           "type": "dateTime",
           "collection": false
         },
@@ -42,13 +43,13 @@
         },
         {
           "name": "value",
-          "path": "valueQuantity.value",
+          "path": "value.ofType(Quantity).value",
           "type": "decimal",
           "collection": false
         },
         {
           "name": "unit",
-          "path": "valueQuantity.unit",
+          "path": "value.ofType(Quantity).unit",
           "collection": false
         },
         {

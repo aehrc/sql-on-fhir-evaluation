@@ -1,6 +1,7 @@
 {
   "name": "rv_o2_delivery_device",
   "resource": "Observation",
+  "status": "draft",
   "select": [
     {
       "column": [
@@ -24,7 +25,7 @@
         },
         {
           "name": "charttime",
-          "path": "effectiveDateTime",
+          "path": "effective.ofType(dateTime)",
           "type": "dateTime",
           "collection": false
         },
@@ -36,7 +37,7 @@
         },
         {
           "name": "value",
-          "path": "valueString",
+          "path": "value.ofType(string)",
           "type": "string",
           "collection": false
         }

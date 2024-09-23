@@ -1,6 +1,7 @@
 {
   "name": "rv_icu_encounter",
   "resource": "Encounter",
+  "status": "draft",
   "select": [
     {
       "column": [
