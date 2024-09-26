@@ -3,6 +3,8 @@ title: "Racial and Ethnic differences in O2 flow"
 output:
   html_document:
     df_print: paged
+params:
+  dataset: "data/fhir_mimic-2.2"
 ---
 
 Qualitatively replicate the results of the [Assessment of Racial and Ethnic Differences in Oxygen Supplementation Among Patients in the Intensive Care Unit](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2794196) study
@@ -30,14 +32,14 @@ library(ggplot2)
 source('R/functions.R')
 ```
 
-Load subject and o2 flow data:
+Load subject and o2 flow data from dataset: "`r params$dataset`".
 
 ```{r load_data}
-subject_df <- load_subject('data/fhir_mimic-2.2/subject.csv')
-reading_o2_flow_df <- load_reading('data/fhir_mimic-2.2/reading_o2_flow.csv')
+subject_df <- load_subject(file.path(params$dataset, 'subject.csv'))
+reading_o2_flow_df <- load_reading(file.path(params$dataset, 'reading_o2_flow.csv'))
 ```
 
-Compute the average o2 flow for each subject and join with the subject data:
+Compute the average o2 flow for each subject and join with the subject data.
 
 ```{r process_data}
 avg_o2_flow_df <- reading_o2_flow_df %>%

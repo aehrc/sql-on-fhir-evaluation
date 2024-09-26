@@ -1,6 +1,18 @@
 
 
 
+
+
+# SOF
+
+## Notes
+- weak typing and validation in fhirpath makes if difficult to catch bugs in view definitions. Fields that do not exits are silently ignored and produce NULLs.
+
+
+# Setup
+
+
+
 ## Aidbox
 
 ### Notes:

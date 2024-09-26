@@ -1,10 +1,12 @@
-from . duckdb import DuckDBSqlCtx
+from .alchemy import AlchemySqlCtx
 import requests
 import os
-class AidboxSqlCtx(DuckDBSqlCtx):
+from sqlalchemy import create_engine
 
-    def __init__(self, base_url, auth = None):
-        super().__init__()
+class AidboxSqlCtx(AlchemySqlCtx):
+
+    def __init__(self, base_url, db_url, auth = None):
+        super().__init__(create_engine(db_url, isolation_level='AUTOCOMMIT').connect())
         self._base_url = base_url
         self._auth = auth
 

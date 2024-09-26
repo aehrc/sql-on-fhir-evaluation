@@ -10,7 +10,7 @@ from study.export import DataExporter
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 VIEW_SRC_DIR = os.path.join(BASE_DIR, 'src')
-OUTPUT_DIR = os.path.join(BASE_DIR, 'data/fhir_mimic-2.2')
+OUTPUT_DIR = os.path.join(BASE_DIR, '_data/fhir_mimic-2.2')
 
 SPARK_CONF_DIR = os.path.join(BASE_DIR, 'env/spark-conf')
 MIMIC_FHIR_PATH = "/Users/szu004/datasets/work/mimic-iv/mimic4-ptl"

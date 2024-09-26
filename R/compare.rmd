@@ -1,0 +1,61 @@
+---
+title: "Compare Data Exports"
+output:
+  html_document:
+    df_print: paged
+---
+
+### Compare the data exports from different SOF implementations.
+
+Initialize
+
+```{r init, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_knit$set(root.dir = '../')
+```
+```{r setup, message=FALSE, warning=FALSE}
+library(lubridate)
+library(MLmetrics)
+library(dplyr)
+library(ggplot2)
+source('R/functions.R')
+```
+Include datasets to compare.
+```{r define_datasets}
+datasets = c('_data/fhir_mimic-2.2', '_data/aidbox_mimic-2.2')
+```
+
+Compare subjects.
+```{r compare_subjects}
+for (ds in datasets) {
+  subject_df <- load_subject(file.path(ds, 'subject.csv'))
+  print(ds)
+  print(summary(subject_df))
+}
+```
+Compare O2 flow.
+```{r compare_o2_flow}
+for (ds in datasets) {
+  reading_o2_flow_df <- load_reading(file.path(ds, 'reading_o2_flow.csv'))
+  print(ds)
+  print(summary(reading_o2_flow_df))
+}
+```
+Compare so2.
+
+```{r compare_so2_flow}
+for (ds in datasets) {
+  reading_so2_df <- load_reading(file.path(ds, 'reading_so2.csv'))
+  print(ds)
+  print(summary(reading_so2_df))
+}
+```
+
+Compare spo2.
+
+```{r compare_spo2_flow}
+for (ds in datasets) {
+  reading_spo2_df <- load_reading(file.path(ds, 'reading_spo2.csv'))
+  print(ds)
+  print(summary(reading_spo2_df))
+}
+```

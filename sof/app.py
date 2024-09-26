@@ -1,12 +1,13 @@
 import glob
 from sof import SOFViewDef, SQLViewDef
 
-class ViewCtx:
 
+class ViewCtx:
     class Builder:
         def __init__(self, sql_ctx):
             self._sql_ctx = sql_ctx
             self._view_defs = []
+            self._defined = []
 
         def with_view(self, view_def):
             self._view_defs.append(view_def)
@@ -24,18 +25,23 @@ class ViewCtx:
             return self.with_views([SQLViewDef.from_file(view_file)
                                     for view_file in glob.glob(view_glob)])
 
-        def build(self):
-            return ViewCtx(self._sql_ctx, self._view_defs)
+        def with_defined(self, names):
+            self._defined.extend(names)
+            return self
 
-    def __init__(self, sql_ctx, view_defs):
+        def build(self):
+            return ViewCtx(self._sql_ctx,
+                           self._view_defs,
+                           {k: None for k in self._defined} if self._defined else None
+                           )
+
+    def __init__(self, sql_ctx, view_defs, views=None):
         self._sql_ctx = sql_ctx
         self._view_defs = {view_def.name: view_def for view_def in view_defs}
-        self._views = {}
-
+        self._views = views or {}
 
     def get_definition(self, view_name):
         return self._view_defs[view_name]
-
 
     def _instantiate_view(self, view_name):
         if view_name not in self._views:
@@ -49,7 +55,6 @@ class ViewCtx:
     def get_view(self, view_name):
         self._instantiate_view(view_name)
         return self._views[view_name]
-
 
     def create_all(self):
         for view_name in self._view_defs:

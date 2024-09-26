@@ -14,7 +14,7 @@ class PtlDBSqlView(SqlView):
         return self.as_df().toPandas()
 
     def to_csv(self, path):
-        self.to_pandas().to_csv(path)
+        self.to_pandas().to_csv(path, index=False)
 
     def as_df(self):
         return self._sql_ctx.select(f"SELECT * FROM {self._name}")

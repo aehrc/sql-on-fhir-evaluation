@@ -62,7 +62,7 @@ WITH ce_stg1 AS (
         subject_id
          , stay_id
          , charttime
-         , NULL as itemid
+         , CAST(NULL AS INTEGER) as itemid
          , o2_delivery_device AS o2_device
          , ROW_NUMBER() OVER (
         PARTITION BY subject_id, charttime ORDER BY o2_delivery_device

@@ -49,6 +49,7 @@ class SQLViewDef:
         with open(file_path) as f:
             sql = f.read()
         match = re.search(r'CREATE OR REPLACE \w* VIEW (\w+) AS', sql)
+        match = match or re.search(r'CREATE OR REPLACE VIEW (\w+) AS', sql)
         match = match or re.search(r'CREATE TABLE (\w+) AS', sql)
         if not match:
             raise ValueError(f"Cannot find view name in {file_path}")

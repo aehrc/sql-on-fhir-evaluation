@@ -37,7 +37,7 @@
         },
         {
           "name": "valuestr",
-          "path": "valueString",
+          "path": "value.ofType(string)",
           "type": "string",
           "collection": false
         },
