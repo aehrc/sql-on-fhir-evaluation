@@ -1,3 +1,4 @@
+-- based on: mimic-code/mimic-iv/concepts_postgres/measurement/bg.sql
 -- DEPENDS-ON: dv_obs_bg
 DROP TABLE IF EXISTS md_bg;
 CREATE TABLE md_bg AS

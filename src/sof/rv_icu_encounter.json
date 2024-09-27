@@ -6,25 +6,25 @@
     {
       "column": [
         {
-          "name": "encounter_id",
+          "name": "stay_id",
           "path": "getResourceKey()",
           "type": "string",
           "collection": false
         },
         {
-          "name": "patient_id",
+          "name": "subject_id",
           "path": "subject.getReferenceKey()",
           "type": "string",
           "collection": false
         },
         {
-          "name": "admit_date",
+          "name": "admittime",
           "path": "period.start",
           "type": "dateTime",
           "collection": false
         },
         {
-          "name": "disch_date",
+          "name": "dischtime",
           "path": "period.end",
           "type": "dateTime",
           "collection": false

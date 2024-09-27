@@ -1,11 +1,11 @@
 -- DEPENDS-ON: rv_obs_bg
 CREATE OR REPLACE TEMP VIEW dv_obs_bg AS
-SELECT patient_id AS subject_id,
-       encounter_id AS hadm_id,
-       CAST(charttime AS TIMESTAMP) as charttime,
+SELECT subject_id,
+       hadm_id,
+       CAST(charttime AS TIMESTAMP) AS charttime,
        storetime,
-       valuestr as value,
-       value AS valuenum,
-       CAST(code AS INTEGER) as itemid,
+       value,
+       valuenum,
+       CAST(itemid AS INTEGER) AS itemid,
        specimen_id
 FROM rv_obs_bg;

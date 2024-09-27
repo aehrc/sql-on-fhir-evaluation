@@ -12,13 +12,13 @@
           "collection": false
         },
         {
-          "name": "patient_id",
+          "name": "subject_id",
           "path": "subject.getReferenceKey()",
           "type": "string",
           "collection": false
         },
         {
-          "name": "encounter_id",
+          "name": "stay_id",
           "path": "encounter.getReferenceKey()",
           "type": "string",
           "collection": false

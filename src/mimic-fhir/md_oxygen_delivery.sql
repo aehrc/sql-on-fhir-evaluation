@@ -1,3 +1,4 @@
+-- based on: mimic-code/mimic-iv/concepts_postgres/measurement/oxygen_delivery.sql
 -- DEPENDS-ON: dv_obs_o2_flow, dv_o2_delivery_device
 DROP TABLE IF EXISTS md_oxygen_delivery;
 CREATE TABLE md_oxygen_delivery AS
@@ -11,11 +12,11 @@ WITH ce_stg1 AS (
                WHEN itemid IN (223834, 227582) THEN 223834
                ELSE itemid END AS itemid
          , NULL AS value
-         , o2_flow AS valuenum
+         , valuenum
          , NULL AS valueuom
          , storetime
     FROM dv_obs_o2_flow ce
-    WHERE ce.o2_flow IS NOT NULL
+    WHERE ce.valuenum IS NOT NULL
       AND ce.itemid IN
           (
            223834 -- o2 flow
@@ -63,9 +64,9 @@ WITH ce_stg1 AS (
          , stay_id
          , charttime
          , CAST(NULL AS INTEGER) as itemid
-         , o2_delivery_device AS o2_device
+         , value AS o2_device
          , ROW_NUMBER() OVER (
-        PARTITION BY subject_id, charttime ORDER BY o2_delivery_device
+        PARTITION BY subject_id, charttime ORDER BY value
         ) AS rn
     FROM dv_o2_delivery_device
 )

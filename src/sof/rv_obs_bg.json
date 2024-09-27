@@ -12,13 +12,13 @@
           "collection": false
         },
         {
-          "name": "patient_id",
+          "name": "subject_id",
           "path": "subject.getReferenceKey()",
           "type": "string",
           "collection": false
         },
         {
-          "name": "encounter_id",
+          "name": "hadm_id",
           "path": "encounter.getReferenceKey()",
           "type": "string",
           "collection": false
@@ -36,25 +36,27 @@
           "collection": false
         },
         {
-          "name": "valuestr",
+          "name": "value",
           "path": "value.ofType(string)",
           "type": "string",
           "collection": false
         },
         {
-          "name": "value",
+          "name": "valuenum",
           "path": "value.ofType(Quantity).value",
           "type": "decimal",
           "collection": false
         },
         {
-          "name": "unit",
+          "name": "valueuom",
           "path": "value.ofType(Quantity).unit",
+          "type": "string",
           "collection": false
         },
         {
-          "name": "code",
+          "name": "itemid",
           "path": "code.coding.code",
+          "type": "code",
           "collection": false
         },
         {

@@ -48,5 +48,4 @@ WHERE ce.stay_id IS NOT NULL
         , 223761  -- "Temperature Fahrenheit"
         , 224642 -- Temperature Site
     )
-GROUP BY ce.subject_id, ce.stay_id, ce.charttime
-;
+GROUP BY ce.subject_id, ce.stay_id, ce.charttime;
