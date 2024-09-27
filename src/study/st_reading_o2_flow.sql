@@ -1,5 +1,5 @@
 -- DEPENDS-ON: md_oxygen_delivery, st_subject
-CREATE OR REPLACE TEMP VIEW stx_reading_o2_flow AS
+CREATE OR REPLACE TEMP VIEW st_reading_o2_flow AS
 WITH nc_o2 AS (
     SELECT *, LEAST(o2_flow, o2_flow_additional) AS o2_flow_nc FROM md_oxygen_delivery WHERE o2_delivery_device_1 = 'Nasal cannula' AND o2_delivery_device_2 IS NULL
 ), nc_o2_flow AS (
