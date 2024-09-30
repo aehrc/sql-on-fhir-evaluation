@@ -30,6 +30,7 @@ def run_ptl(mimic_ptl_dir, output_dir):
 
     view_ctx = (ViewCtx.Builder(sql_ctx=create_sql_ctx())
                 .load_sof(os.path.join(VIEW_SRC_DIR, 'sof/*.json'))
+                .load_sql(os.path.join(VIEW_SRC_DIR, 'sof_typed.spark/*.sql'))
                 .load_sql(os.path.join(VIEW_SRC_DIR, 'mimic-fhir/*.sql'))
                 .load_sql(os.path.join(VIEW_SRC_DIR, 'study/*.sql'))
                 .build())

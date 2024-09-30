@@ -39,7 +39,8 @@ def run_aidbox(aidbox_url, aidbox_db_url, auth_username, auth_password, legacy_v
     click.echo(f"Loading legacy sof: {legacy_views}")
     click.echo(f"Base dir: {BASE_DIR}")
     view_ctx_builder = (ViewCtx.Builder(sql_ctx=create_sql_ctx()) \
-                        .load_sof(os.path.join(VIEW_SRC_DIR, 'sof/*.json')))
+                        .load_sof(os.path.join(VIEW_SRC_DIR, 'sof/*.json'))
+                        .load_sql(os.path.join(VIEW_SRC_DIR, 'sof_typed.psql/*.sql')))
 
     if "yes" == legacy_views:
         view_ctx_builder.load_sof(os.path.join(VIEW_SRC_DIR, 'sof.legacy/*.json'))

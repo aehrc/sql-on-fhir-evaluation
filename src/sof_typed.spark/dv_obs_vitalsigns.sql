@@ -3,7 +3,7 @@ CREATE OR REPLACE TEMP VIEW dv_obs_vitalsigns AS
 SELECT subject_id,
        stay_id,
        CAST(charttime AS TIMESTAMP) AS charttime,
-       storetime,
+       CAST(storetime AS timestamp) AS storetime,
        valuenum,
        CAST(itemid AS INTEGER) AS itemid
 FROM rv_obs_vitalsigns;

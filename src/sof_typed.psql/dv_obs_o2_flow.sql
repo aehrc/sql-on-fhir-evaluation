@@ -2,8 +2,8 @@
 CREATE OR REPLACE TEMP VIEW dv_obs_o2_flow AS
 SELECT subject_id,
         stay_id,
-        CAST(charttime AS TIMESTAMP) AS charttime,
-        storetime,
+        charttime::TIMESTAMPTZ AT TIME ZONE 'UTC' AS charttime,
+        storetime::TIMESTAMPTZ AT TIME ZONE 'UTC' AS storetime,
         valuenum,
         CAST(itemid AS INTEGER) AS itemid
 FROM rv_obs_o2_flow;

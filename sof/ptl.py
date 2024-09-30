@@ -25,6 +25,7 @@ class PtlSqlCtx(SqlCtx):
     def __init__(self, spark, ds):
         self._spark = spark
         self._ds = ds
+        spark.sql("SET TIME ZONE 'UTC'")
 
     def sof(self, sof_view):
         view_name = sof_view['name']
