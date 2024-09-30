@@ -21,7 +21,7 @@ source('R/functions.R')
 ```
 Include datasets to compare.
 ```{r define_datasets}
-datasets = c('_data/fhir_mimic-2.2', '_data/aidbox_mimic-2.2')
+datasets = c('_data/ptl_mimic-2.2', '_data/aidbox_mimic-2.2')
 ```
 
 Compare subjects.

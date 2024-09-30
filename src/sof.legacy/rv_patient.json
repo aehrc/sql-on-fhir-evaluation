@@ -6,7 +6,7 @@
     {
       "column": [
         {
-          "name": "patient_id",
+          "name": "subject_id",
           "path": "getResourceKey()",
           "collection": false
         },
