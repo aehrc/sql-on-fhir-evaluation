@@ -58,6 +58,9 @@ We have made the following assumptions the data selection:
 
 ## Running with Pathling
 
+Pre-requisites:
+- Pathling encoded FHIR-MIMIC data.
+
 
 
 

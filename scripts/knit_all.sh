@@ -20,4 +20,4 @@ knit_rmd() {
 
 # Call the function with the desired parameters
 knit_rmd "${R_DIR}/compare.Rmd" "compare.html" "${OUTPUT_DIR}"
-knit_rmd "${R_DIR}/o2_flow.Rmd" "o2_flow.html" "${OUTPUT_DIR}"
+knit_rmd "${R_DIR}/study.Rmd" "study.html" "${OUTPUT_DIR}"

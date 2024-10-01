@@ -1,0 +1,181 @@
+---
+title: "Assessment of Racial and Ethnic Differences in Oxygen Supplementation"
+output:
+  html_document:
+    df_print: paged
+params:
+  dataset: "_data/ptl_mimic-2.2"
+---
+
+Qualitatively replicate the results of the [Assessment of Racial and Ethnic Differences in Oxygen Supplementation Among Patients in the Intensive Care Unit](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2794196) study,
+including:
+
+- differences in the oxygen delivery rates between the racial groups (non-parametric Wilcoxon test of the difference of means of the oxygen delivery rates)
+- differences in SpO2 for a given hemoglobin oxygen saturation (So2) between races and ethnicities when controlling for gender (simplified regression model 1)
+
+## Data processing
+
+Initialize
+
+```{r init, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_knit$set(root.dir = '../')
+```
+```{r setup, message=FALSE, warning=FALSE}
+library(lubridate)
+library(MLmetrics)
+library(dplyr)
+library(ggplot2)
+source('R/functions.R')
+```
+
+Load subject and observation data (o2 flow, spo2 and so2) from dataset: "`r params$dataset`".
+
+```{r load_data}
+subject_df <- load_subject(file.path(params$dataset, 'subject.csv'))
+reading_o2_flow_df <- load_reading(file.path(params$dataset, 'reading_o2_flow.csv'))
+reading_so2_df <- load_reading('data/fhir_mimic-2.2/reading_so2.csv')
+reading_spo2_df <- load_reading('data/fhir_mimic-2.2/reading_spo2.csv')
+```
+
+Compute the average values of observations flow for each subject.
+
+```{r process_data}
+avg_o2_flow_df <- reading_o2_flow_df %>%
+  arrange(subject_id, chart_time) %>%
+  group_by(subject_id) %>%
+  group_modify(~ data.frame(o2_flow = avg_reading(.x$chart_time, .x$o2_flow))) %>%
+  filter(o2_flow < 20)  %>% filter(o2_flow > 0) %>%# remove outliers
+  ungroup()
+
+avg_so2_df <- reading_so2_df %>%
+  filter(so2 > 70) %>%
+  arrange(subject_id, chart_time) %>%
+  group_by(subject_id) %>%
+  group_modify(~ data.frame(so2 = avg_reading(.x$chart_time, .x$so2))) %>%
+  ungroup()
+
+avg_spo2_df <- reading_spo2_df %>%
+  arrange(subject_id, chart_time) %>%
+  group_by(subject_id) %>%
+  group_modify(~ data.frame(spo2 = avg_reading(.x$chart_time, .x$spo2))) %>%
+  ungroup()
+```
+
+
+## Compare oxygen delivery rates by race/ethnicity
+
+Analysis of the differences in oxygen delivery rates by race and ethnicity.
+
+See "Result/Factors Associated With Oxygen Delivery Rates" and [Figure 2b](https://cdn.jamanetwork.com/ama/content_public/journal/intemed/938956/ioi220037f2_1658163803.93993.png?Expires=1727754938&Signature=SCd44KsPUjxQ6hsuUJ0x7qlEB5-ncz6eQJCzwpoCyqMx7z6FUoIpMfuOi2nqrjHa3fFne~yJc8k0-uGsM375mBzYediN69rOfHMnA80YiOWbudsxrn6OPgxdknjGnlcuzWao1KAe0uZZWIv~KDSp-ngPZqYdoUC2GDSS687NdULlQg3bv0Ua6DAtjEhdPz0ePlAg6RSm8h~QH6xdlTDaN04NCzfVCWZOMPgvq0YjEYMAeCKR8hTxWHVh~z4XKNcZnXD9dPv5Z588aXGVFuGPMl9xc0vrGczA7JSrihoRc7YJyDrhN60R24JWVYcrZlUEsoDCgGKKseCjIoFj7IvbCA__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA) in the original paper.
+
+Assumption/Differences:
+
+- For Wilcoxon test we  assume "greater" alternative hypothesis, i.e. the O2 flow is higher for WHITE patients. This is not explicitly stated in the original paper, but it is a reasonable assumption given the context.
+
+Join with the subject data with the average o2 flow data, and summarize the cohort.
+```{r join_cohort_o2}
+subject_with_o2_flow_df <- subject_df %>% inner_join(avg_o2_flow_df, by='subject_id')
+summary(subject_with_o2_flow_df)
+```
+
+Compare the differences in oxygen delivery rates by race/ethnicity.
+```{r compare_table}
+iqr_df <- subject_with_o2_flow_df %>%
+  group_by(race_category) %>%
+  summarize(
+    count = n(),
+    mean = mean(o2_flow),
+    Q1 = quantile(o2_flow, .25),
+    median = quantile(o2_flow, .5),
+    Q3 = quantile(o2_flow, .75),
+    IQR = IQR(o2_flow, na.rm = TRUE)
+  )
+iqr_df
+```
+
+```{r compare_chart}
+(ggplot(subject_with_o2_flow_df, aes(x=race_category, y=o2_flow, colour = race_category))
+  + geom_boxplot()
+  + labs(x = "Race and ethnicity", y = "Average oxygen rate [L/min]", title = "Oxygen delivery rates by race and ethnicity")
+)
+
+```
+
+### Test for differences in mean O2 flow by race/ethnicity
+
+Test for differences in mean O2 flow against ‘WHITE’ using unpaired non-parametric Wilcoxon test.
+
+#### Black vs White
+
+```{r test_white_black}
+wc_white_black <- wilcox.test(o2_flow ~ race_category, alternative = 'greater',
+                       data = subject_with_o2_flow_df %>% filter(race_category %in% c('WHITE', 'BLACK') ))
+wc_white_black
+```
+
+#### Asian vs White
+
+```{r test_white_asian}
+wc_white_asian <- wilcox.test(o2_flow ~ race_category, alternative = 'greater',
+                       data = subject_with_o2_flow_df %>% filter(race_category %in% c('WHITE', 'ASIAN') ))
+wc_white_asian
+```
+
+#### Hispanic vs White
+
+```{r test_white_hispanic}
+wc_white_hispanic <- wilcox.test(o2_flow ~ race_category, alternative = 'greater',
+                       data = subject_with_o2_flow_df %>% filter(race_category %in% c('WHITE', 'HISPANIC') ))
+wc_white_hispanic
+```
+
+### Discussion
+
+Like on the original study, we found that the average oxygen flow rate was higher for white patients compared to non white patients. The difference was statistically significant for black (p = `r wc_white_black$p.value`), asian (p = `r wc_white_asian$p.value`) and hispanic (p = `r wc_white_hispanic$p.value`) patients.
+
+
+## Compare Spo2 ~ So2 by race/ethnicity
+
+Multivariable linear regression was performed to determine the association between blood hemoglobin oxygen saturation and SpO2.
+
+Specifically, models with race and ethnicity as a covariate were developed to show associations, including SpO2 as a function of criterion standard hemoglobin oxygen saturation to confirm different device performance between races and ethnicities.
+
+See "Pulse Oximetry and Hemoglobin Oxygen Saturation by Race and Ethnicity
+" and [Figure 2A](https://cdn.jamanetwork.com/ama/content_public/journal/intemed/938956/ioi220037f2_1658163803.93993.png?Expires=1727754938&Signature=SCd44KsPUjxQ6hsuUJ0x7qlEB5-ncz6eQJCzwpoCyqMx7z6FUoIpMfuOi2nqrjHa3fFne~yJc8k0-uGsM375mBzYediN69rOfHMnA80YiOWbudsxrn6OPgxdknjGnlcuzWao1KAe0uZZWIv~KDSp-ngPZqYdoUC2GDSS687NdULlQg3bv0Ua6DAtjEhdPz0ePlAg6RSm8h~QH6xdlTDaN04NCzfVCWZOMPgvq0YjEYMAeCKR8hTxWHVh~z4XKNcZnXD9dPv5Z588aXGVFuGPMl9xc0vrGczA7JSrihoRc7YJyDrhN60R24JWVYcrZlUEsoDCgGKKseCjIoFj7IvbCA__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA) in the original paper.
+
+Join with the subject data with the average Spo2 and So2 data, and summarize the cohort.
+
+```{r join_cohort_so2}
+subject_with_so2_df <- subject_df %>% inner_join(avg_so2_df, by='subject_id') %>% inner_join(avg_spo2_df, by='subject_id')
+summary(subject_with_so2_df)
+```
+
+Differences in SpO2 for a given hemoglobin oxygen saturation between races and ethnicities.
+```{r compare_chart_so2}
+print(
+  ggplot(subject_with_so2_df, aes(x=so2, y=spo2))
+    + geom_point()
+    + geom_smooth(aes(colour = race_category), se = FALSE, method='gam')
+    + labs(x = "Average hemoglobin oxygen saturation [%]",
+           y = "Average SpO2 [%]",
+           color="Race/Ethnicity",
+           title = "SpO2 and hemoglobin oxygen saturation with smoothig curves")
+)
+
+```
+
+### Linear model 1 (simplified)
+
+Multivariate linear model to test the association between SpO2 and So2, controlling for race/ethnicity and gender.
+
+```{r linear_model_so2}
+spo2_lm <-lm(spo2 ~  so2 + race_category + gender, data = subject_with_so2_df)
+print(summary(spo2_lm))
+```
+
+### Discussion
+
+Like on the original paper, we found Black race was associated with a higher SpO2 for a given hemoglobin oxygen saturation, when controlling for age and the same was true for Asian and Hispanic patients.
+
+
+
