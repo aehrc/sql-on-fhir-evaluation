@@ -13,7 +13,7 @@ including:
 - differences in the oxygen delivery rates between the racial groups (non-parametric Wilcoxon test of the difference of means of the oxygen delivery rates)
 - differences in SpO2 for a given hemoglobin oxygen saturation (So2) between races and ethnicities when controlling for gender (simplified regression model 1)
 
-## Data processing
+## Data processing (`r params$dataset`)
 
 Initialize
 
@@ -33,8 +33,8 @@ Load subject and observation data (o2 flow, spo2 and so2) from dataset: "`r para
 ```{r load_data}
 subject_df <- load_subject(file.path(params$dataset, 'subject.csv'))
 reading_o2_flow_df <- load_reading(file.path(params$dataset, 'reading_o2_flow.csv'))
-reading_so2_df <- load_reading('data/fhir_mimic-2.2/reading_so2.csv')
-reading_spo2_df <- load_reading('data/fhir_mimic-2.2/reading_spo2.csv')
+reading_so2_df <- load_reading(file.path(params$dataset,'reading_so2.csv'))
+reading_spo2_df <- load_reading(file.path(params$dataset,'reading_spo2.csv'))
 ```
 
 Compute the average values of observations flow for each subject.
