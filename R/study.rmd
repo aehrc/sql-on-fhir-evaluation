@@ -49,7 +49,7 @@ avg_o2_flow_df <- reading_o2_flow_df %>%
 
 avg_so2_df <- reading_so2_df %>%
   filter(so2 > 70) %>%
-  arrange(subject_id, chart_time) %>%
+  arrange(subject_id, chart_time, so2) %>%
   group_by(subject_id) %>%
   group_modify(~ data.frame(so2 = avg_reading(.x$chart_time, .x$so2))) %>%
   ungroup()

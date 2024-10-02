@@ -1660,7 +1660,7 @@ reading_spo2_df &lt;- load_reading(file.path(params$dataset,&#39;reading_spo2.cs
 
 avg_so2_df &lt;- reading_so2_df %&gt;%
   filter(so2 &gt; 70) %&gt;%
-  arrange(subject_id, chart_time) %&gt;%
+  arrange(subject_id, chart_time, so2) %&gt;%
   group_by(subject_id) %&gt;%
   group_modify(~ data.frame(so2 = avg_reading(.x$chart_time, .x$so2))) %&gt;%
   ungroup()

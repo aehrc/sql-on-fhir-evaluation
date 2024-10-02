@@ -1,0 +1,67 @@
+---
+title: "Compare Data Exports"
+output:
+  html_document:
+    df_print: paged
+---
+
+### Compare the data exports from different SOF implementations.
+
+Initialize
+
+```{r init, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_knit$set(root.dir = '../')
+```
+```{r setup, message=FALSE, warning=FALSE}
+library(lubridate)
+library(MLmetrics)
+library(dplyr)
+library(ggplot2)
+source('R/functions.R')
+```
+Include datasets to compare.
+```{r define_datasets}
+ptl_ds_dir = '_data/ptl_mimic-2.2'
+adx_ds_dir ='_data/aidbox_mimic-2.2'
+```
+
+Compare subjects.
+```{r compare_subjects}
+plt_subject_df <- load_subject(file.path(ptl_ds_dir, 'subject.csv'))
+adx_subject_df <- load_subject(file.path(adx_ds_dir, 'subject.csv')) %>% mutate(subject_id = paste0('Patient/', subject_id))
+
+print(summary(plt_subject_df))
+print(summary(adx_subject_df))
+print(summary(plt_subject_df %>% inner_join(adx_subject_df)))
+
+```
+
+
+Compare o2 flow.
+```{r compare_o2_flow}
+plt_o2_df <- load_reading(file.path(ptl_ds_dir, 'reading_o2_flow.csv'))
+adx_o2_df <- load_reading(file.path(adx_ds_dir, 'reading_o2_flow.csv')) %>% mutate(subject_id = paste0('Patient/', subject_id))
+
+print(summary(plt_o2_df))
+print(summary(adx_o2_df))
+print(head(plt_o2_df %>% full_join(adx_o2_df, by = c('subject_id', 'chart_time')) %>% filter(o2_flow.x != o2_flow.y)))
+```
+Compare so2 flow.
+```{r compare_so2}
+plt_so2_df <- load_reading(file.path(ptl_ds_dir, 'reading_so2.csv'))
+adx_so2_df <- load_reading(file.path(adx_ds_dir, 'reading_so2.csv')) %>% mutate(subject_id = paste0('Patient/', subject_id))
+
+print(summary(plt_so2_df))
+print(summary(adx_so2_df))
+print(head(plt_so2_df %>% full_join(adx_so2_df, by = c('subject_id', 'chart_time')) %>% filter(so2.x != so2.y)))
+```
+
+Compare spo2 flow.
+```{r compare_spo2}
+plt_spo2_df <- load_reading(file.path(ptl_ds_dir, 'reading_spo2.csv'))
+adx_spo2_df <- load_reading(file.path(adx_ds_dir, 'reading_spo2.csv')) %>% mutate(subject_id = paste0('Patient/', subject_id))
+
+print(summary(plt_spo2_df))
+print(summary(adx_spo2_df))
+print(head(plt_spo2_df %>% full_join(adx_spo2_df, by = c('subject_id', 'chart_time')) %>% filter(spo2.x != spo2.y)))
+```
