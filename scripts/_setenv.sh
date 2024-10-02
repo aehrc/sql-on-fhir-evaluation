@@ -1,9 +1,5 @@
 PROJ_DIR=$(cd "$BASEDIR/.."; pwd)
-
-SCRIPT_NAME=$(basename "$0")
-ENV_NAME=${SCRIPT_NAME%%_*}
-if [ "$ENV_NAME" = "$SCRIPT_NAME" ]; then
-  ENV_NAME="default"
+# Load environment variables from the configuration file specified as the first argument
+if [ -n "$1"  ]; then
+  source "$1"
 fi
-echo "Loading environment variables from $PROJ_DIR/conf/${ENV_NAME}.sh"
-source "$PROJ_DIR/conf/${ENV_NAME}.sh"

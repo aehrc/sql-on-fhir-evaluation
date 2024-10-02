@@ -20,7 +20,7 @@ derby.log
 _work/
 _temp/
 _remote/
-
+_build/
 
 #HPC
 slurm-*.out

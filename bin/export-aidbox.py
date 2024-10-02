@@ -1,7 +1,7 @@
+#!/usr/bin/env python
 import os
 
 import click
-from pygments.lexer import default
 
 from sof import ViewCtx
 from sof.aidbox import AidboxSqlCtx
@@ -20,7 +20,7 @@ VIEW_SRC_DIR = os.path.join(BASE_DIR, 'src')
 @click.option('--auth-password', default='secret', help='Aidbox auth password')
 @click.option("--legacy-views", type=str, default='no', help="Load legacy sof")
 @click.option('--output-dir', required=True, help='Output directory')
-def run_aidbox(aidbox_url, aidbox_db_url, auth_username, auth_password, legacy_views, output_dir):
+def export_aidbox(aidbox_url, aidbox_db_url, auth_username, auth_password, legacy_views, output_dir):
     def create_sql_ctx():
         ctx = AidboxSqlCtx(
             aidbox_url,
@@ -54,4 +54,4 @@ def run_aidbox(aidbox_url, aidbox_db_url, auth_username, auth_password, legacy_v
 
 
 if __name__ == '__main__':
-    run_aidbox()
+    export_aidbox()

@@ -1,9 +1,8 @@
-import glob
-import os
+#!/usr/bin/env python
 
+import os
 import click
 from pathling import PathlingContext
-
 from sof import ViewCtx
 from sof.ptl import PtlSqlCtx
 
@@ -16,7 +15,7 @@ SPARK_CONF_DIR = os.path.join(BASE_DIR, 'env/spark-conf')
 @click.command()
 @click.option('--mimic-ptl-dir', required=True, help='Mimic Pathling encoded path')
 @click.option('--output-dir', required=True, help='Output directory')
-def run_ptl(mimic_ptl_dir, output_dir):
+def export_ptl(mimic_ptl_dir, output_dir):
     click.echo(f"Running views on ptl data from: {mimic_ptl_dir} to: {output_dir}")
     click.echo(f"Base dir: {BASE_DIR}")
     click.echo(f"Spark conf dir: {SPARK_CONF_DIR}")
@@ -39,4 +38,4 @@ def run_ptl(mimic_ptl_dir, output_dir):
     DataExporter(view_ctx).export(output_dir)
 
 if __name__ == '__main__':
-    run_ptl()
+    export_ptl()

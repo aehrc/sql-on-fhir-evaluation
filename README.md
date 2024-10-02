@@ -59,15 +59,70 @@ We have made the following assumptions the data selection:
 ## Running with Pathling
 
 Pre-requisites:
-- Pathling encoded FHIR-MIMIC data.
+- Pathling with SQL on FHIR support installed in the python environment
+- Pathling encoded FHIR-MIMIC data (full or demo)
 
+To export the study data run the following command:
 
+```bash
+./bin/export-ptl.py \
+  --mimic-ptl-dir "${MIMIC_PTL_DIR}" \
+  --output-dir "${PTL_OUTPUT_DIR}"
+```
 
+Where:
+- `MIMIC_PTL_DIR` is the directory where the Pathling encoded FHIR-MIMIC data is stored
+- `PTL_OUTPUT_DIR` is the directory where the output export files will be saved (e.g.: `.target/ptl-export`)
 
+Alternatively, you can define the variables in file (e.g. `local-env.sh`) and run:
+
+```bash
+./scripts/export-ptl.sh <config-file-name>
+```
+
+The parameter is optional if not provided the variables defined in the current shell environment will be used.
+
+The example of the configuration file is provided in `conf/local-env.sh`.
 
 ## Running with Aidbox
 
+Pre-requisites:
+- Aidbox (version ?.?) instance with mimic-fhir (or mimic-demo-fhir loaded)
+- Aidbox REST API endpoint configured with basic authentication
+- Direct access to the postgres database backing the Aidbox instance (connection details)
+
+To export the study data run the following command:
+
+```bash
+./bin/export-aidbox.py  --aidbox-url "${AIDBOX_URL}" \
+  --aidbox-db-url "${AIDBOX_DB_URL}" \
+  --auth-username "${AIDBOX_USERNAME}" \
+  --auth-password "${AIDBOX_PASSWORD}" \
+  --legacy-views "${AIDBOX_LEGACY}" \
+  --output-dir "${AIDBOX_OUTPUT_DIR}"
+```
+
+Where:
+- `AIDBOX_URL` is the URL of the Aidbox REST API endpoint (e.g.: `https://localhost:8080`)
+- `AIDBOX_DB_URL` is the SQLAlchemy compatile connection URL of the Aidbox PostgreSQL database (e.g.: `postgresql+psycopg2://aidbox:fIF2TkhhH0@localhost:8432/aidbox`)
+- `AIDBOX_USERNAME` is the username for basic authentication (e.g.: `basic`)
+- `AIDBOX_PASSWORD` is the password for basic authentication (e.g.: `secret`)
+- `AIDBOX_LEGACY` `['yes'|'no']` is the flag to use view compatible with the older version of Aidbox (e.g.: `no`)
+- `AIDBOX_OUTPUT_DIR` is the directory where the output export files will be saved (e.g.: `.target/aidbox-export`)
+
+
+Alternatively, you can define the variables in file (e.g. `local-env.sh`) and run:
+
+```bash
+./scripts/export-aidbox.sh <config-file-name>
+```
+The parameter is optional if not provided the variables defined in the current shell environment will be used.
+
+The example of the configuration file is provided in `conf/local-env.sh`. 
+This is based on a local Aidbox instance running in a docker container.
+
 ## Running with PostgreSQL
+
 
 
 
