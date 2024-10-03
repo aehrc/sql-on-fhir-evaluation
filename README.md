@@ -104,7 +104,7 @@ To export the study data run the following command:
 
 Where:
 - `AIDBOX_URL` is the URL of the Aidbox REST API endpoint (e.g.: `https://localhost:8080`)
-- `AIDBOX_DB_URL` is the SQLAlchemy compatile connection URL of the Aidbox PostgreSQL database (e.g.: `postgresql+psycopg2://aidbox:fIF2TkhhH0@localhost:8432/aidbox`)
+- `AIDBOX_DB_URL` is the SQLAlchemy compatible connection URL of the Aidbox PostgreSQL database (e.g.: `postgresql+psycopg2://aidbox:fIF2TkhhH0@localhost:8432/aidbox`)
 - `AIDBOX_USERNAME` is the username for basic authentication (e.g.: `basic`)
 - `AIDBOX_PASSWORD` is the password for basic authentication (e.g.: `secret`)
 - `AIDBOX_LEGACY` `['yes'|'no']` is the flag to use view compatible with the older version of Aidbox (e.g.: `no`)
@@ -123,7 +123,30 @@ This is based on a local Aidbox instance running in a docker container.
 
 ## Running with PostgreSQL
 
-TBP
+Pre-requisites:
+- PosgreSQL database with MIMIC-IV version 2.2 loaded and mimic_derived tables created
+
+To export the study data run the following command:
+
+```bash
+./bin/export-psql \
+  --mimic-db-url "${PSQL_DB_URL}" \
+  --output-dir "${PSQL_OUTPUT_DIR}"
+```
+
+Where:
+- `PSQL_DB_URL` is the SQLAlchemy compatible connection URL to the PostgreSQL database (e.g.: `postgresql+psycopg2://posgres@localhost:5432/mimic4`)
+- `PSQL_OUPUT_DIR` is the directory where the output export files will be saved (e.g.: `.target/psql-export`)
+
+Alternatively, you can define the variables in file (e.g. `local-env.sh`) and run:
+
+```bash
+./scripts/export-psql.sh <config-file-name>
+```
+
+The parameter is optional if not provided the variables defined in the current shell environment will be used.
+
+The example of the configuration file is provided in `conf/local-env.sh`.
 
 ## Running with DuckDB (bridge to PostgreSQL)
 
