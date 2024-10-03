@@ -49,14 +49,31 @@ We have made the following assumptions the data selection:
 
 
 
-
-
 # Running the Analysis pipeline
 
+## Setting up python environment
 
+Set up a virtual environment (e.g. using `venv` or `conda`) with python 3.11 and install the required packages:
+```
+pip install -r python/requirements.txt
+```
 
+Build the python package `https://github.com/aehrc/pathling/tree/issue/1759` branch of Pathling with SQL on FHIR support and install it in the python environment:
 
-## Running with Pathling
+```bash
+git clone --branch issue/1759 --single-branch https://github.com/aehrc/pathling.git
+cd pathling
+mvn install -DskipTests -am -pl lib/python
+pip install lib/python/target/py-dist/pathling-7.1.0.dev0.tar.gz
+```
+
+Install the `sof-mimic` package from the  `python` directory:
+
+```bash
+pip install -e python`
+```
+
+## Exporting data with Pathling
 
 Pre-requisites:
 - Pathling with SQL on FHIR support installed in the python environment
@@ -84,7 +101,7 @@ The parameter is optional if not provided the variables defined in the current s
 
 The example of the configuration file is provided in `conf/local-env.sh`.
 
-## Running with Aidbox
+## Exporting data with Aidbox
 
 Pre-requisites:
 - Aidbox (version ?.?) instance with mimic-fhir (or mimic-demo-fhir loaded)
@@ -121,7 +138,7 @@ The parameter is optional if not provided the variables defined in the current s
 The example of the configuration file is provided in `conf/local-env.sh`. 
 This is based on a local Aidbox instance running in a docker container.
 
-## Running with PostgreSQL
+## Exporting data with PostgreSQL
 
 Pre-requisites:
 - PosgreSQL database with MIMIC-IV version 2.2 loaded and mimic_derived tables created
@@ -148,8 +165,7 @@ The parameter is optional if not provided the variables defined in the current s
 
 The example of the configuration file is provided in `conf/local-env.sh`.
 
-## Running with DuckDB (bridge to PostgreSQL)
-
+## Exporting data with DuckDB (bridge to PostgreSQL)
 
 Pre-requisites:
 - PosgreSQL database with MIMIC-IV version 2.2 loaded and mimic_derived tables created
