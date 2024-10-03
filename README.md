@@ -40,10 +40,10 @@ In particular, we would like to show:
 - differences in SpO2 for a given hemoglobin oxygen saturation (so2) between races and ethnicities when controlling for gender (simplified regression model 1)
 
 We have made the following assumptions the data selection:
-- the 
+- TBD
 
 
-# View design
+# Analytical pipeline design
 
 ![View Layers](assets/sof_layes.png)
 
@@ -51,7 +51,7 @@ We have made the following assumptions the data selection:
 
 # Running the Analysis pipeline
 
-## Setting up python environment
+## Exporting data
 
 Set up a virtual environment (e.g. using `venv` or `conda`) with python 3.11 and install the required packages:
 ```
@@ -73,7 +73,7 @@ Install the `sof-mimic` package from the  `python` directory:
 pip install -e python`
 ```
 
-## Exporting data with Pathling
+### Exporting data with Pathling
 
 Pre-requisites:
 - Pathling with SQL on FHIR support installed in the python environment
@@ -101,7 +101,7 @@ The parameter is optional if not provided the variables defined in the current s
 
 The example of the configuration file is provided in `conf/local-env.sh`.
 
-## Exporting data with Aidbox
+### Exporting data with Aidbox
 
 Pre-requisites:
 - Aidbox (version ?.?) instance with mimic-fhir (or mimic-demo-fhir loaded)
@@ -138,7 +138,7 @@ The parameter is optional if not provided the variables defined in the current s
 The example of the configuration file is provided in `conf/local-env.sh`. 
 This is based on a local Aidbox instance running in a docker container.
 
-## Exporting data with PostgreSQL
+### Exporting data with PostgreSQL
 
 Pre-requisites:
 - PosgreSQL database with MIMIC-IV version 2.2 loaded and mimic_derived tables created
@@ -165,7 +165,7 @@ The parameter is optional if not provided the variables defined in the current s
 
 The example of the configuration file is provided in `conf/local-env.sh`.
 
-## Exporting data with DuckDB (bridge to PostgreSQL)
+### Exporting data with DuckDB (bridge to PostgreSQL)
 
 Pre-requisites:
 - PosgreSQL database with MIMIC-IV version 2.2 loaded and mimic_derived tables created
@@ -192,5 +192,32 @@ The parameter is optional if not provided the variables defined in the current s
 
 The example of the configuration file is provided in `conf/local-env.sh`.
 
-## Resources
+
+## Generating analysis results
+
+Pre-requisites:
+- R environment with the required packages installed:
+  - `rmarkdown`
+  - `ggplot2`
+  - `dplyr`
+  - `lubridate`
+  - `MLmetrics`
+
+The analysis is performed using a Rmd script `R/study.Rmd` that uses the exported data to generate the results. 
+It accepts the `dataset` parameter that specifies the path to the directory with the exported data.
+
+To generate the report run the following command:
+
+```bash
+./scripts/make-report.sh ${EXPORT_DIR} ${OUTPUT_FILE}
+```
+
+Where:
+- `EXPORT_DIR` is the directory with the exported data (e.g.: `target/ptl-export`)
+- `OUTPUT_FILE` is the path to the output file (e.g.: `target/ptl-report.html`)
+
+Note: The report only works on exports from the full mimic-iv datasets. 
+It fails on the mimic-demo-iv exports due to the lack of data for certain races/ethnicities.
+
+# Resources
 - [Assessment of Racial and Ethnic Differences in Oxygen Supplementation Among Patients in the Intensive Care Unit](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2794196)
