@@ -34,7 +34,6 @@ def export_ptl(mimic_ptl_dir, output_dir):
                 .load_sql(os.path.join(VIEW_SRC_DIR, 'study/*.sql'))
                 .build())
 
-    print(view_ctx._view_defs)
     DataExporter(view_ctx).export(output_dir)
 
 if __name__ == '__main__':

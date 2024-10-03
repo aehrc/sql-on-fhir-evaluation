@@ -34,4 +34,4 @@ class AlchemySqlCtx(SqlCtx):
 
     @classmethod
     def from_url(cls, url):
-        return cls(create_engine(url).connect())
+        return cls(create_engine(url, isolation_level='AUTOCOMMIT').connect())

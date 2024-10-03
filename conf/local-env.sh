@@ -17,3 +17,7 @@ AIDBOX_OUTPUT_DIR="${PROJ_DIR:?Not defined}/target/aidbox_mimic-demo-2.2"
 #
 MIMIC_PTL_DIR="${MIMIC_DS_ROOT_DIR}/work/mimic4/mimic-iv-on-fhir-demo-1.1.3_af91a8f/parquet.ptl_issue_1759_37a999d1"
 PTL_OUTPUT_DIR="${PROJ_DIR:?Not defined}/target/ptl_mimic-demo-2.2"
+
+#DuckDB configuration
+DUCKDB_INIT_SQL="ATTACH 'dbname=mimic4 user=postgres' AS mimic4 (TYPE POSTGRES, READ_ONLY); USE mimic4"
+DUCKDB_OUTPUT_DIR="${PROJ_DIR:?Not defined}/target/duckdb_mimic-demo-2.2"

@@ -19,8 +19,9 @@ class DuckDBSqlView(SqlView):
 
 
 class DuckDBSqlCtx(SqlCtx):
-    def __init__(self):
-        pass
+    def __init__(self, init_sql=None):
+        if init_sql:
+            duckdb.sql(init_sql)
 
     def sql(self, sql):
         duckdb.sql(sql)

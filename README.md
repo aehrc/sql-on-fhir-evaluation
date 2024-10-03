@@ -51,7 +51,7 @@ We have made the following assumptions the data selection:
 
 
 
-# Running the views
+# Running the Analysis pipeline
 
 
 
@@ -123,8 +123,35 @@ This is based on a local Aidbox instance running in a docker container.
 
 ## Running with PostgreSQL
 
+TBP
+
+## Running with DuckDB (bridge to PostgreSQL)
 
 
+Pre-requisites:
+- PosgreSQL database with MIMIC-IV version 2.2 loaded and mimic_derived tables created
+
+To export the study data run the following command:
+
+```bash
+./bin/export-duckdb.py \
+  --init-sql "${DUCKDB_INIT_SQL}" \
+  --output-dir "${DUCKDB_OUTPUT_DIR}"
+```
+
+Where:
+- `DUCKDB_INIT_SQL` is the DuckDB sql to attach and use the PostgreSQL database (e.g.: `ATTACH 'dbname=mimic4 user=postgres' AS mimic4 (TYPE POSTGRES, READ_ONLY); USE mimic4`)
+- `DUCKDB_OUTPUT_DIR` is the directory where the output export files will be saved (e.g.: `.target/duckdb-export`)
+
+Alternatively, you can define the variables in file (e.g. `local-env.sh`) and run:
+
+```bash
+./scripts/export-duckdb.sh <config-file-name>
+```
+
+The parameter is optional if not provided the variables defined in the current shell environment will be used.
+
+The example of the configuration file is provided in `conf/local-env.sh`.
 
 ## Resources
 - [Assessment of Racial and Ethnic Differences in Oxygen Supplementation Among Patients in the Intensive Care Unit](https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2794196)
