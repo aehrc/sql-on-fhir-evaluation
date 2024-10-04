@@ -1,5 +1,5 @@
 ---
-title: "Compare Data Exports"
+title: "Detailed Compare of Exports"
 output:
   html_document:
     df_print: paged
