@@ -33,23 +33,58 @@ study from FHIR version of the MIMIC-VI.
 We intend to qualitatively reproduce the selected results of the study as the exact replication is not possible due to:
 - the differences in the MIMIC-IV version used; MIMIC-FHIR is based on MIMIC-VI version 2.2 (not version 1.0 as in the original study)
 - lack of sufficient details on data selection and processing in the study
+- information loss in the FHIR conversion
 - simplifications and assumptions made in the replication
 
 In particular, we would like to show:
 - differences in the oxygen delivery rates between the racial groups (non-parametric Wilcoxon test of the difference of means of the oxygen delivery rates)
 - differences in SpO2 for a given hemoglobin oxygen saturation (so2) between races and ethnicities when controlling for gender (simplified regression model 1)
 
-We have made the following assumptions the data selection:
-- TBD
-
-
 # Analytical pipeline design
+
+To reproduce the results of the study we will use the following approach:
+- Export the data from the FHIR server (Pathling, Aidbox) to a set of CSV files using a combination of SQL on FHIR views and ANSI SQL queries
+- Analyze the exported data using R (Rmd notebook) to generate the results
+
+
+## Data transformation
+
+Because the original study was based on `mimic_derived` rather than the raw MIMIC-IV data,
+we decided to create a mimic_derived-like views on the MIMIC-FHIR data and base our study specific views on it.
+The SQL queries to create this layer were borrowed from the `mimic-code` repository (the original queries for `mimic_derived`).
+
+The introduction of mimic_derived-like layers allows us to use the same study-specific queries to extract data form both MIMIC-IV and MIMIC-FHIR datasets, which:
+- make is easier to identify sources of required data (as the mimic_derived concepts are referenced in the study) 
+- allows us to compare both approaches
+
+The views have a layered structure with the specific combination sets of view packages used depending on the data source, as shown in the diagram below:
 
 ![View Layers](assets/sof_layes.png)
 
+All view packages are defined the subdirectories `src` directory.
+
+Here is the list of the view packages:
+- `sof` - the SQL on FHIR views to extract raw data required for the mimic_derrived-like views
+- `sof-types.*` - a thin layer that adapts the types of SOF produced relations to uniform database types (e.g. `TIMESTAMP`) in the implementation-specific manner
+- `mimic-fhir` - combine/transform basic view into the complex mimic_derived-like views
+- `study` - the study-specific views that extract the data required for the study
+- `mimic-2.2`- a thin adapter layer form mimic_derived to mimic_derived-like
+
+
+Two auxiliary packages are:
+- `sof.legacy` - the SQL on FHIR views compatible with the older version Aidbox (with what appears to be a bug in accessing choice values in extensions with .ofType() function)
+- `study.psql` - a version of study specific views using some materialized tables instead of temporary views to improve performance on PostgreSQL
 
 
 # Running the Analysis pipeline
+
+The analysis pipeline consists of the following steps:
+1. Exporting data from the FHIR server (Pathling, Aidbox) to  set of CSV files using a subset of SQLonFHIR/SQL view from the `src` and the `mimic-sof` python package  (in `python/` directory) 
+2. Analyzing the exported data using and Rmd script to notebook to generate the results (`R/study.Rmd`)
+
+We assume that MIMIC-FHIR data was loaded to the FHIR server prior to running the analysis pipeline, in the implementation-specific manner.
+
+It's also possible to run the pipeline directly on the PostgreSQL database with MIMIC-IV data loaded.
 
 ## Exporting data
 
