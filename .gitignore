@@ -28,3 +28,4 @@ slurm-*.out
 /.RData
 
 
+/_internal/
