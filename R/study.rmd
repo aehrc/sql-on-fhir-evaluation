@@ -170,12 +170,17 @@ Multivariate linear model to test the association between SpO2 and So2, controll
 
 ```{r linear_model_so2}
 spo2_lm <-lm(spo2 ~  so2 + race_category + gender, data = subject_with_so2_df)
-print(summary(spo2_lm))
+spo2_lm_summary <- summary(spo2_lm)
+print(spo2_lm_summary)
+coef <- as.list(coef(spo2_lm))
+pvalues <- as.list(spo2_lm_summary$coefficients[, "Pr(>|t|)"])
 ```
 
 ### Discussion
 
-Like on the original paper, we found Black race was associated with a higher SpO2 for a given hemoglobin oxygen saturation, when controlling for age and the same was true for Asian and Hispanic patients.
-
-
+Like on the original paper, we found Black race was associated with a higher
+SpO2 for a given hemoglobin oxygen saturation(`r coef$race_categoryBLACK`, p = `r pvalues$race_categoryBLACK`)
+than the white patients (`r coef$so2`, p = `r pvalues$so2`),
+when controlling for age and the same was true for Asian (`r coef$race_categoryASIAN`, p = `r pvalues$race_categoryASIAN`)
+and Hispanic (`r coef$race_categoryHISPANIC`, p = `r pvalues$race_categoryHISPANIC`) patients.
 

@@ -1807,7 +1807,8 @@ races and ethnicities.</p>
 <p>Multivariate linear model to test the association between SpO2 and
 So2, controlling for race/ethnicity and gender.</p>
 <pre class="r"><code>spo2_lm &lt;-lm(spo2 ~  so2 + race_category + gender, data = subject_with_so2_df)
-print(summary(spo2_lm))</code></pre>
+spo2_lm_summary &lt;- summary(spo2_lm)
+print(spo2_lm_summary)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = spo2 ~ so2 + race_category + gender, data = subject_with_so2_df)
@@ -1830,12 +1831,17 @@ print(summary(spo2_lm))</code></pre>
 ## Residual standard error: 1.44 on 6895 degrees of freedom
 ## Multiple R-squared:  0.1769, Adjusted R-squared:  0.1763 
 ## F-statistic: 296.5 on 5 and 6895 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>coef &lt;- as.list(coef(spo2_lm))
+pvalues &lt;- as.list(spo2_lm_summary$coefficients[, &quot;Pr(&gt;|t|)&quot;])</code></pre>
 </div>
 <div id="discussion-1" class="section level3">
 <h3>Discussion</h3>
 <p>Like on the original paper, we found Black race was associated with a
-higher SpO2 for a given hemoglobin oxygen saturation, when controlling
-for age and the same was true for Asian and Hispanic patients.</p>
+higher SpO2 for a given hemoglobin oxygen saturation(0.872089, p =
+7.1696922^{-35}) than the white patients (0.2637752, p =
+1.9086849^{-261}), when controlling for age and the same was true for
+Asian (0.7321986, p = 3.0243389^{-12}) and Hispanic (0.5425644, p =
+5.5266557^{-9}) patients.</p>
 </div>
 </div>
 
