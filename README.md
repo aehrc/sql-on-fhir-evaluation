@@ -40,6 +40,12 @@ In particular, we would like to show:
 - differences in the oxygen delivery rates between the racial groups (non-parametric Wilcoxon test of the difference of means of the oxygen delivery rates)
 - differences in SpO2 for a given hemoglobin oxygen saturation (so2) between races and ethnicities when controlling for gender (simplified regression model 1)
 
+
+
+The results of the replication produce by the pipeline described below are available in the `results` directory:
+- [results using the Pathling](results/study_aidbox.html)
+- [results using the Aidbox](results/study_ptl.html)
+
 # Analytical pipeline design
 
 To reproduce the results of the study we will use the following approach:
