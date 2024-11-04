@@ -313,5 +313,3 @@ Where:
 
 Note: The report only works on exports from the full MIMIC-IV dataset. It fails
 on the MIMIC-Demo-IV exports due to the lack of data for certain races/ethnicities.
-
-Copyright © 2018-2023, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230. License under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
