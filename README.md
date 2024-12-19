@@ -1,4 +1,4 @@
-# Using SQL on FHIR to reproduce the results of study on racial and differences in oxygen supplementation
+# SQL on FHIR - MIMIC-IV Study Replication
 
 This in an example of using SQL on FHIR view in combination with ANSI SQL
 queries to qualitatively reproduce selected results of the study: [Assessment of
