@@ -313,3 +313,9 @@ Where:
 
 Note: The report only works on exports from the full MIMIC-IV dataset. It fails
 on the MIMIC-Demo-IV exports due to the lack of data for certain races/ethnicities.
+
+## Important note
+
+This software is being released in support of a scientific publication. We do
+not intend to enhance or maintain it beyond this point. This software is not
+suitable for use in any clinical or production setting.
